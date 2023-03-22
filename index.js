@@ -40,6 +40,13 @@ async function getImage(
 }
 
 const renderFirstImage = async () => {
+  // APPEND LOADING
+  const loadingElement = document.getElementById("loading");
+  loadingElement.innerHTML = `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`;
+
+  const main = document.getElementsByTagName("main")[0];
+  main.style.display = "none";
+
   const randomNum = getRandomInt(promptsToGenerate.length);
 
   const primeiraImagem = document.getElementById("firstRender");
@@ -49,11 +56,17 @@ const renderFirstImage = async () => {
   const urlImage = URL.createObjectURL(response);
 
   primeiraImagem.src = urlImage;
+
+  main.style.display = "block";
+  loadingElement.innerHTML = "";
 };
 
 const generateImage = async () => {
   const section = document.getElementById("cards");
-  section.innerHTML = "";
+  const loading = document.createElement("div");
+  loading.innerHTML = `<div class='lds-ring'><div></div><div></div><div></div><div></div></div>`;
+
+  section.append(loading);
 
   const card = document.createElement("div");
   card.classList.add("card");
@@ -79,6 +92,8 @@ const generateImage = async () => {
   buttonDownload.addEventListener("click", () =>
     downloadImage(urlImage, promptInput.value)
   );
+
+  loading.style.display = "none";
 
   card.append(promptH3, imagePrompt, buttonDownload);
 
